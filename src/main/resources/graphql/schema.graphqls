@@ -1,0 +1,291 @@
+#QUERYS
+
+type Query {
+    findAllBookings: [Booking]
+    findBookingsByIdUser(idUser: ID!): [Booking]
+    findBookingsByIdBooking(idBooking: ID!): Booking
+    findAllFlights: [Flight]
+    findAllAvailableSeats(idFlight: ID!): [Seat]
+    findPassengerByIdPassenger(idPassenger: ID!): Passenger
+    findPassengersByIdBooking(idBooking: ID!): [Passenger]
+}
+
+#MUTATIONS
+
+type Mutation {
+    addBooking(booking: BookingInput!): Booking
+    deleteBooking(idBooking: ID!): [Booking]
+    editBookingStatus(bookingStatus: String!, idBooking: ID!): Booking
+    addPassenger(passenger: PassengerInput, idBooking: ID!): Passenger
+    deletePassenger(idPassenger: ID!, idBooking: ID!): Booking
+    editPassengerSeat(idPassenger: ID!, idSeat: ID!): Passenger
+    editPassengerInfo(idPassenger: ID!, passenger: PassengerInput!): Passenger
+    editLuggage(idLuggage: ID!, luggage: LuggageInput): Luggage
+    addLuggage(luggage: LuggageInput): Luggage
+    deleteLuggage(idPassenger: ID!, idLuggage: ID!): Passenger
+}
+
+#RESPONSE TYPES
+
+type Booking {
+    idBooking: ID!
+    idFlight: ID!
+    flight: Flight!
+    idUser: ID!
+    user: Users!
+    bookingDate: String!
+    idBookingStatus: ID!
+    bookingStatus: BookingStatus!
+    passengers: [Passenger]
+    payment: Payment
+}
+
+type BookingStatus {
+    idBookingStatus: ID!
+    name: String!
+    description: String
+}
+
+type City {
+    idCity: ID!
+    name: String!
+    idCountry: ID!
+    country: Country!
+    timezone: String!
+    latitude: Float!
+    longitude: Float!
+}
+
+type Country {
+    idCountry: ID!
+    name: String!
+    continent: String!
+    language: String
+}
+
+type DocumentType {
+    idDocumentType: ID!
+    name: String!
+}
+
+type Flight {
+    idFlight: ID!
+    flightNumber: String!
+    idPlane: ID!
+    plane: Plane!
+    idDepartureCity: ID!
+    departureCity: City!
+    idArrivalCity: ID!
+    arrivalCity: City!
+    departureTime: String!
+    arrivalTime: String!
+    idFlightStatus: ID!
+    flightStatus: FlightStatus!
+    flightDuration: String!
+    distanceKm: Float!
+    seats: Int!
+    idCaptain: ID!
+    captain: Pilot!
+    idSubCaptain: ID
+    subCaptain: Pilot
+    priceEconomy: Float!
+    priceBusiness: Float!
+    priceFirstClass: Float!
+}
+
+type FlightStatus {
+    idFlightStatus: ID!
+    name: String!
+    description: String
+}
+
+type Luggage {
+    idLuggage: ID!
+    idPassenger: ID!
+    idLuggageType: ID!
+    LuggageType: LuggageType!
+    heightCm: Float!
+    weightKg: Float!
+    widthCm: Float!
+    extraFree: Float
+}
+
+type LuggageType {
+    idLuggageType: ID!
+    name: String!
+}
+
+type Passenger {
+    idPassenger: ID!
+    idSeat: ID!
+    seat: Seat!
+    firstName: String!
+    lastName: String!
+    dateOfBirth: String
+    documentId: String!
+    passportNumber: String!
+    nationality: String
+    luggageIncluded: Boolean!
+    idDocumentType: ID!
+    documentType: DocumentType!
+    luggage: [Luggage]
+}
+
+type Payment {
+    idPayment: ID!
+    idBooking: ID!
+    amount: Float!
+    paymentDate: String!
+    idPaymentStatus: ID!
+    paymentStatus: PaymentStatus!
+    idPaymentMethod: ID!
+    paymentMethod: PaymentMethod!
+}
+
+type PaymentMethod {
+    idPaymentMethod: ID!
+    name: String!
+    description: String
+}
+
+type PaymentStatus {
+    idPaymentStatus: ID!
+    name: String!
+    description: String
+}
+
+type Permission {
+    idPermission: ID!
+    name: String!
+    description: String
+}
+
+type Pilot {
+    idPilot: ID!
+    firstName: String!
+    lastName: String!
+    licenseNumber: String!
+    dateOfBirth: String!
+    nationality: String!
+    rank: String!
+    hoursFlown: Float!
+    employeeDate: String!
+    idPilotStatus: ID!
+    pilotStatus: PilotStatus!
+    homeBase: String
+    lastMedicalCheck: String!
+}
+
+type PilotStatus {
+    idPilotStatus: ID!
+    name: String!
+    description: String
+}
+
+type Plane {
+    idPlane: ID!
+    model: String!
+    manufacturer: String!
+    capacityEconomy: Int!
+    capacityBusiness: Int!
+    capacityFirstClass: Int!
+    dateManufactured: String!
+    lastMaintenanceDate: String!
+    registrationNumber: String!
+    fuelCapacity: Float!
+}
+
+type Role {
+    idRole: ID!
+    name: String!
+    description: String
+}
+
+type Scale {
+    idScale: ID!
+    idFlight: ID!
+    idCity: ID!
+    city: City!
+    arrivalTime: String!
+    departureTime: String!
+    layoverDuration: String!
+}
+
+type SeatClass {
+    idSeatClass: ID!
+    name: String!
+}
+
+type Seat {
+    idSeat: ID!
+    idFlight: ID!
+    seatNumber: String!
+    isReserved: Boolean!
+    price: Float!
+    idSeatClass: ID!
+    seatClass: SeatClass!
+}
+
+type SpecialRequest {
+    idSpecialRequest: ID!
+    name: String!
+    description: String
+}
+
+type Users {
+    idUser: ID!
+    firstName: String!
+    lastName: String!
+    phoneNumber: String!
+    email: String!
+    nationality: String
+    dateOfBirth: String
+    documentId: String!
+    passportNumber: String!
+    registrationDate: String!
+    flyerNumber: Int!
+    address: String
+    idUsersType: ID!
+    UsersType: UsersType!
+    idDocumentType: ID!
+    documentType: DocumentType!
+}
+
+type UsersType {
+    idUsersType: ID!
+    name: String!
+    description: String
+}
+
+#REQUEST TYPES
+
+input BookingInput {
+    idFlight: ID!
+    idUser: ID!
+    bookingDate: String!
+    idBookingStatus: ID!
+    passengers: [PassengerInput]
+}
+
+input LuggageInput {
+    idPassenger: ID!
+    idLuggageType: ID!
+    heightCm: Float!
+    weightKg: Float!
+    widthCm: Float!
+    extraFree: Float
+}
+
+input PassengerInput {
+    idSeat: ID!
+    firstName: String!
+    lastName: String!
+    dateOfBirth: String!
+    documentId: String!
+    passportNumber: String!
+    nationality: String
+    luggageIncluded: Boolean!
+    luggage: [LuggageInput]
+    idDocumentType: ID!
+}
+
